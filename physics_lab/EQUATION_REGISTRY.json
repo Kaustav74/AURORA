@@ -1,0 +1,315 @@
+{
+  "registry_version": "1.0.0",
+  "project": "AURORA Physics Lab",
+  "last_updated": "2026-10-14",
+  "provenance_document": "Lost Pages of the Lost Notebook of Ramanujan (Research Compendium by Kaustav Nath, 210 pages)",
+  "models": [
+    {
+      "model_id": "MODEL-A-NEWTONIAN",
+      "model_version": "1.0.0",
+      "display_name": "Classical Point-Mass Newtonian Gravitation",
+      "formulation_family": "NEWTONIAN",
+      "source_document": "Standard Classical Mechanics & PDF Section 1",
+      "source_page_range": "2-3, 60-61",
+      "source_equation_raw": "Phi(R) = -GM/R; g(R) = -dPhi/dR = GM/R^2; v_circ = sqrt(GM/R)",
+      "implementation_equation_latex": "\\vec{a} = -\\frac{GM}{r^3}\\vec{r}",
+      "parameters": [
+        {
+          "symbol": "G",
+          "name": "Newtonian Gravitational Constant",
+          "si_unit": "m^3 kg^-1 s^-2",
+          "default_value": 6.6743e-11,
+          "is_tunable": false
+        },
+        {
+          "symbol": "M",
+          "name": "Central Body Mass",
+          "si_unit": "kg",
+          "default_value": 1.989e30,
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Orbital Energy E = 0.5 * v^2 - GM/r",
+        "Specific Angular Momentum vec{h} = vec{r} x vec{v}"
+      ],
+      "domain_of_validity": "r > 0, v << c (weak-field non-relativistic regime)",
+      "implementation_status": "NUMERICALLY_VERIFIED",
+      "scientific_validation_status": "EMPIRICALLY_TESTED",
+      "known_limitations": "Singular at r = 0; fails in strong gravity / high velocity; cannot explain flat galactic rotation without dark matter.",
+      "test_references": [
+        "physics_lab/tests/test_model_a_newtonian.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-B-RAMANUJAN-PSERIES-OPENING",
+      "model_version": "1.0.0",
+      "display_name": "Normalized Ramanujan-Inspired p-Series Deformation (Opening Formulation)",
+      "formulation_family": "RAMANUJAN_PSERIES",
+      "source_document": "A Ramanujan-Inspired Deformation of Newtonian Gravity",
+      "source_page_range": "2-8, 16-22",
+      "source_equation_raw": "K_{p,r}(s) = sum_{k=1}^\\infty e^{-\\pi k^2/p} / (k+r)^s; K_hat(R) = K(R)/K(R_ref); Phi(R) = -GM/R * K_hat(R); g(R) = GM * (K_hat(R)/R^2 - K_hat_prime(R)/R)",
+      "implementation_equation_latex": "\\vec{a}(R) = -GM \\left[ \\frac{\\tilde{K}(R)}{R^2} - \\frac{\\tilde{K}'(R)}{R} \\right] \\hat{r}",
+      "parameters": [
+        {
+          "symbol": "R0",
+          "name": "Characteristic Kernel Radial Scale Length",
+          "si_unit": "m",
+          "default_value": 1.0e6,
+          "is_tunable": true
+        },
+        {
+          "symbol": "s",
+          "name": "Dirichlet Series Exponent",
+          "si_unit": "dimensionless",
+          "default_value": 2.0,
+          "is_tunable": false
+        },
+        {
+          "symbol": "r",
+          "name": "Denominator Regularization Offset",
+          "si_unit": "dimensionless",
+          "default_value": 0.0,
+          "is_tunable": true
+        },
+        {
+          "symbol": "R_ref",
+          "name": "Normalization Reference Radius (where K_hat = 1.0)",
+          "si_unit": "m",
+          "default_value": 1.0e7,
+          "is_tunable": true
+        },
+        {
+          "symbol": "N_terms",
+          "name": "Series Truncation Cutoff",
+          "si_unit": "dimensionless integer",
+          "default_value": 500,
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Orbital Energy E = 0.5 * v^2 + Phi(R)",
+        "Specific Angular Momentum vec{h} = vec{r} x vec{v}"
+      ],
+      "domain_of_validity": "R > 0, p = R/R0 > 0, r not negative integer. Circular orbit requires K_hat/R - K_hat' > 0.",
+      "implementation_status": "NUMERICALLY_VERIFIED",
+      "scientific_validation_status": "UNDER_REVIEW",
+      "known_limitations": "Singular at R = 0; requires K_hat/R - K_hat' > 0 for circular orbit; horizon indicator H(R) is mathematical only, not general relativistic horizon.",
+      "test_references": [
+        "physics_lab/tests/test_model_b_kernel.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-C-KERNEL-PERTURBATION",
+      "model_version": "1.0.0",
+      "display_name": "Generalized Kernel Perturbations in Orbital Dynamics",
+      "formulation_family": "KERNEL_PERTURBATION",
+      "source_document": "A Computational Investigation of Generalized Kernel Perturbations in Orbital Dynamics",
+      "source_page_range": "106-114",
+      "source_equation_raw": "a_k = a_d + a_p + a_s; a_d = K_d * (r/R_E)^2 * r_hat; a_p = K_p * sin(phi) * r_hat; a_s = K_s * (r_hat . s_hat) * s_hat",
+      "implementation_equation_latex": "\\vec{a}_k = K_d \\left( \\frac{r}{R_{\\text{ref}}} \\right)^2 \\hat{r} + K_p \\sin(\\phi) \\hat{r} + K_s (\\hat{r} \\cdot \\hat{s}) \\hat{s}",
+      "parameters": [
+        {
+          "symbol": "K_d",
+          "name": "Distance-Weighted Perturbation Magnitude",
+          "si_unit": "m s^-2",
+          "default_value": 1.0e-6,
+          "is_tunable": true
+        },
+        {
+          "symbol": "K_p",
+          "name": "Phase-Coupled Perturbation Magnitude",
+          "si_unit": "m s^-2",
+          "default_value": 1.0e-6,
+          "is_tunable": true
+        },
+        {
+          "symbol": "K_s",
+          "name": "Solar Alignment Perturbation Magnitude",
+          "si_unit": "m s^-2",
+          "default_value": 1.0e-6,
+          "is_tunable": true
+        },
+        {
+          "symbol": "s_hat",
+          "name": "Primary Source / Solar Alignment Unit Vector",
+          "si_unit": "dimensionless vector (3)",
+          "default_value": [1.0, 0.0, 0.0],
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Non-conservative in general due to phase and external alignment terms; Lyapunov candidate V = 0.5*v^2 - mu/r + V_k"
+      ],
+      "domain_of_validity": "r > 0; Stability requires K_d < mu / (2 * r_0^3)",
+      "implementation_status": "TRANSCRIBED",
+      "scientific_validation_status": "UNDER_REVIEW",
+      "known_limitations": "Contains explicit coordinate/sun dependent terms; non-conservative energy drift expected during active phase coupling.",
+      "test_references": [
+        "physics_lab/tests/test_model_c_perturbation.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-D1-HURWITZ-MASS-SCALED",
+      "model_version": "1.0.0",
+      "display_name": "Hurwitz-Zeta Kernel with Universal Nath Mass Scaling",
+      "formulation_family": "REGULARIZED_COMPACT_OBJECT",
+      "source_document": "Universal Mass-Scaling Upgrade & Protocols 1 and 2",
+      "source_page_range": "115-122, 133-158",
+      "source_equation_raw": "K_p(R) = zeta(p, 1 + R/R0) / zeta(p); R0(M) = alpha * gamma * sqrt(GM); a(R) = (GM/R^2) * (1 / K_p(R))",
+      "implementation_equation_latex": "\\vec{a}(R) = -\\frac{GM}{R^2} \\left[ \\frac{\\zeta(p)}{\\zeta\\left(p, 1 + \\frac{R}{\\alpha \\gamma \\sqrt{GM}}\\right)} \\right] \\hat{r}",
+      "parameters": [
+        {
+          "symbol": "p",
+          "name": "Spectral Zeta Exponent",
+          "si_unit": "dimensionless",
+          "default_value": 2.14,
+          "is_tunable": true
+        },
+        {
+          "symbol": "alpha",
+          "name": "Nath Universal Scaling Constant",
+          "si_unit": "dimensionless",
+          "default_value": 38000.0,
+          "is_tunable": true
+        },
+        {
+          "symbol": "gamma",
+          "name": "Nath Transcendental Bridge Constant (e + pi)",
+          "si_unit": "dimensionless",
+          "default_value": 5.8557,
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Orbital Energy (conservative radial field)",
+        "Specific Angular Momentum vec{h} = vec{r} x vec{v}"
+      ],
+      "domain_of_validity": "R > 0, p > 1. Bounded across mass scales from dwarf galaxies to supermassive black holes.",
+      "implementation_status": "TRANSCRIBED",
+      "scientific_validation_status": "UNDER_REVIEW",
+      "known_limitations": "Singular at R = 0 without UV cutoff; generates un-screened boost in solar system unless environmental screening S(g_bar) is active.",
+      "test_references": [
+        "physics_lab/tests/test_model_d1_hurwitz.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-D2-REGULARIZED-UV-CUTOFF",
+      "model_version": "1.0.0",
+      "display_name": "Regularized Compact-Object Formulation with Dynamical Planck UV Cutoff",
+      "formulation_family": "REGULARIZED_COMPACT_OBJECT",
+      "source_document": "Protocols 1 and 2, Section 2.10-2.12",
+      "source_page_range": "141-145, 171-178, 186-189",
+      "source_equation_raw": "Phi_reg(R) = - (GM / sqrt(R^2 + r0^2)) * K_p(sqrt(R^2 + r0^2) / R0); r0(M) = (l_P^2 * R_s)^(1/3)",
+      "implementation_equation_latex": "\\Phi_{\\text{reg}}(R) = -\\frac{GM}{\\sqrt{R^2 + r_0^2}} K_p\\left(\\frac{\\sqrt{R^2 + r_0^2}}{R_0}\\right), \\quad r_0(M) = \\left( \\frac{2 G \\ell_P^2}{c^2} \\right)^{1/3} M^{1/3}",
+      "parameters": [
+        {
+          "symbol": "l_P",
+          "name": "Planck Length",
+          "si_unit": "m",
+          "default_value": 1.616255e-35,
+          "is_tunable": false
+        },
+        {
+          "symbol": "c",
+          "name": "Speed of Light in Vacuum",
+          "si_unit": "m s^-1",
+          "default_value": 299792458.0,
+          "is_tunable": false
+        },
+        {
+          "symbol": "r0_scale",
+          "name": "UV Cutoff Multiplier",
+          "si_unit": "dimensionless",
+          "default_value": 1.0,
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Orbital Energy with regularized potential",
+        "Specific Angular Momentum"
+      ],
+      "domain_of_validity": "R >= 0 (strictly non-singular for all R). Satisfies r0 <= 0.367 R_s (LIGO GW150914 bound).",
+      "implementation_status": "TRANSCRIBED",
+      "scientific_validation_status": "UNDER_REVIEW",
+      "known_limitations": "de Sitter core is non-singular; phenomenological regular metric, not an exact solution of vacuum Einstein equations.",
+      "test_references": [
+        "physics_lab/tests/test_model_d2_uv_cutoff.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-D3-SCREENED-NONLOCAL",
+      "model_version": "1.0.0",
+      "display_name": "Environmentally Screened Non-Local Gravity Framework",
+      "formulation_family": "REGULARIZED_COMPACT_OBJECT",
+      "source_document": "Rectified Field-Theoretic Extensions & Final Stress-Testing Suite",
+      "source_page_range": "181-185, 195-201",
+      "source_equation_raw": "S(g_bar) = 1 / (1 + (g_bar / g_dagger)^2); g_obs(R) = g_bar(R) + S(g_bar) * [g_bar(R) / K_p(xi) - g_bar(R)]",
+      "implementation_equation_latex": "g_{\\text{obs}}(R) = g_{\\text{bar}}(R) + \\frac{1}{1 + \\left(\\frac{g_{\\text{bar}}}{g^\\dagger}\\right)^2} \\left[ \\frac{g_{\\text{bar}}(R)}{K_p(\\xi)} - g_{\\text{bar}}(R) \\right]",
+      "parameters": [
+        {
+          "symbol": "g_dagger",
+          "name": "Galactic Critical Acceleration Screening Scale",
+          "si_unit": "m s^-2",
+          "default_value": 1.2e-10,
+          "is_tunable": true
+        }
+      ],
+      "conserved_quantities": [
+        "Orbital Energy under screened effective potential",
+        "Specific Angular Momentum"
+      ],
+      "domain_of_validity": "All R >= 0; suppresses non-local deviations in planetary regime (gbar >> g_dagger) to < 10^-10.",
+      "implementation_status": "TRANSCRIBED",
+      "scientific_validation_status": "UNDER_REVIEW",
+      "known_limitations": "Screening is acceleration-dependent; velocity-dependent and multi-body gravitational gradients require localized screening evaluations.",
+      "test_references": [
+        "physics_lab/tests/test_model_d3_screened.py"
+      ]
+    },
+    {
+      "model_id": "MODEL-E-RELATIVISTIC-SCHWARZSCHILD",
+      "model_version": "1.0.0",
+      "display_name": "Relativistic Schwarzschild Geodesic Reference",
+      "formulation_family": "RELATIVISTIC_REFERENCE",
+      "source_document": "Standard General Relativity (Misner, Thorne & Wheeler / Schutz)",
+      "source_page_range": "Schutz (1985), Iyer & Will (1987), PDF pp. 11, 142",
+      "source_equation_raw": "d^2 r / dtau^2 = -GM/r^2 + r*(1 - 2GM/(c^2 r))*(dphi/dtau)^2 - (GM / (c^2 r^2 * (1 - 2GM/(c^2 r)))) * (dr/dtau)^2",
+      "implementation_equation_latex": "\\frac{d^2 r}{d\\tau^2} = -\\frac{GM}{r^2} + r\\left(1 - \\frac{2GM}{c^2 r}\\right)\\left(\\frac{d\\phi}{d\\tau}\\right)^2 - \\frac{GM}{c^2 r^2 \\left(1 - \\frac{2GM}{c^2 r}\\right)}\\left(\\frac{dr}{d\\tau}\\right)^2",
+      "parameters": [
+        {
+          "symbol": "R_s",
+          "name": "Schwarzschild Event Horizon Radius (2GM/c^2)",
+          "si_unit": "m",
+          "default_value": 2953.25,
+          "is_tunable": false
+        },
+        {
+          "symbol": "r_ISCO",
+          "name": "Innermost Stable Circular Orbit Radius (6GM/c^2 = 3 R_s)",
+          "si_unit": "m",
+          "default_value": 8859.75,
+          "is_tunable": false
+        },
+        {
+          "symbol": "r_photon",
+          "name": "Photon Sphere Radius (3GM/c^2 = 1.5 R_s)",
+          "si_unit": "m",
+          "default_value": 4429.875,
+          "is_tunable": false
+        }
+      ],
+      "conserved_quantities": [
+        "Specific Energy E/m = (1 - 2GM/(c^2 r)) * dt/dtau",
+        "Specific Angular Momentum L/m = r^2 * dphi/dtau"
+      ],
+      "domain_of_validity": "r > R_s = 2GM/c^2 (exterior Schwarzschild vacuum solution). Motion inside r <= R_s reaches central singularity.",
+      "implementation_status": "UNDER_REVIEW",
+      "scientific_validation_status": "EMPIRICALLY_TESTED",
+      "known_limitations": "Assumes non-rotating (a = 0) and uncharged (Q = 0) black hole. Metric coordinate time diverges as r -> R_s; proper time integration terminates at horizon crossing.",
+      "test_references": [
+        "physics_lab/tests/test_model_e_schwarzschild.py"
+      ]
+    }
+  ]
+}

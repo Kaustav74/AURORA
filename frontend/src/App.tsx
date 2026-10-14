@@ -14,6 +14,7 @@ import { SystemsEngineeringView } from './components/views/SystemsEngineeringVie
 import { VerificationView } from './components/views/VerificationView';
 import { ReportsView } from './components/views/ReportsView';
 import { SettingsAboutView } from './components/views/SettingsAboutView';
+import { PhysicsLabContainer } from './components/views/physics_lab/PhysicsLabContainer';
 import { AlertCircle } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -52,6 +53,7 @@ export const App: React.FC = () => {
         {activeTab === 'overview' && (
           <MissionOverview onNavigateToTab={(tab) => setActiveTab(tab)} />
         )}
+        {activeTab === 'physics' && <PhysicsLabContainer />}
         {activeTab === 'telemetry' && <TelemetryOperations />}
         {activeTab === 'commands' && <CommandCentre />}
         {activeTab === 'incidents' && <IncidentsView />}

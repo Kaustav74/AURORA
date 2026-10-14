@@ -65,6 +65,17 @@ declare module 'lucide-react' {
   export const SkipBack: LucideIcon;
   export const SkipForward: LucideIcon;
   export const RotateCcw: LucideIcon;
+  export const RotateCw: LucideIcon;
   export const Rewind: LucideIcon;
   export const FastForward: LucideIcon;
+  export const Atom: LucideIcon;
+  export const Orbit: LucideIcon;
+  export const Target: LucideIcon;
+  export const Crosshair: LucideIcon;
+  export const ChevronDown: LucideIcon;
+  export const ChevronUp: LucideIcon;
+  export const Maximize2: LucideIcon;
+  export const Gauge: LucideIcon;
+  export const Share2: LucideIcon;
+  export const ExternalLink: LucideIcon;
 }

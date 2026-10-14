@@ -13,6 +13,7 @@ from app.api.routes import (
     systems_engineering,
     reports,
     websocket,
+    physics_lab,
 )
 
 api_router = APIRouter()
@@ -31,3 +32,4 @@ api_router.include_router(health_intel.router)
 api_router.include_router(systems_engineering.router)
 api_router.include_router(reports.router)
 api_router.include_router(websocket.router)
+api_router.include_router(physics_lab.router)

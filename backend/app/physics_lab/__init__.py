@@ -1,0 +1,3 @@
+"""
+AURORA Physics Lab Package
+"""

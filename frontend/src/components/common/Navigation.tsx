@@ -12,10 +12,12 @@ import {
   CheckCircle2,
   FileSpreadsheet,
   Info,
+  Orbit,
 } from 'lucide-react';
 
 export type NavTab =
   | 'overview'
+  | 'physics'
   | 'telemetry'
   | 'commands'
   | 'incidents'
@@ -41,6 +43,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const tabs = [
     { id: 'overview' as NavTab, label: 'Overview', icon: LayoutDashboard },
+    { id: 'physics' as NavTab, label: 'Physics Lab', icon: Orbit },
     { id: 'telemetry' as NavTab, label: 'Telemetry', icon: Activity },
     { id: 'commands' as NavTab, label: 'Command Centre', icon: Terminal },
     {

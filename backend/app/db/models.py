@@ -219,3 +219,54 @@ class IssueRecord(Base):
     status = Column(String(20), nullable=False, default="OPEN")  # OPEN, IN_PROGRESS, RESOLVED, CLOSED
     related_module = Column(String(50), nullable=False)
     resolution_notes = Column(Text, nullable=True)
+
+
+class PhysicsExperimentRecord(Base):
+    __tablename__ = "physics_experiments"
+
+    id = Column(String(36), primary_key=True)
+    name = Column(String(150), nullable=False)
+    model_id = Column(String(100), nullable=False)
+    model_version = Column(String(20), nullable=False, default="1.0.0")
+    central_mass_kg = Column(Float, nullable=False)
+    status = Column(String(30), nullable=False, default="COMPLETED")  # PENDING, RUNNING, COMPLETED, FAILED
+    termination_reason = Column(String(50), nullable=False, default="DURATION_REACHED")
+    integrator = Column(String(50), nullable=False, default="DORMAND_PRINCE")
+    sim_duration_s = Column(Float, nullable=False, default=0.0)
+    closest_approach_m = Column(Float, nullable=True)
+    farthest_distance_m = Column(Float, nullable=True)
+    max_energy_drift = Column(Float, nullable=True)
+    config_json = Column(Text, nullable=True)
+    summary_json = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class PhysicsTrajectoryRecord(Base):
+    __tablename__ = "physics_trajectories"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    experiment_id = Column(String(36), ForeignKey("physics_experiments.id"), nullable=False, index=True)
+    point_count = Column(Integer, nullable=False, default=0)
+    trajectory_json = Column(Text, nullable=False)
+
+
+class PhysicsAnomalyRecord(Base):
+    __tablename__ = "physics_anomalies"
+
+    id = Column(String(50), primary_key=True)
+    experiment_id = Column(String(36), ForeignKey("physics_experiments.id"), nullable=False, index=True)
+    time_sim = Column(Float, nullable=False)
+    model_id = Column(String(100), nullable=False)
+    category = Column(String(50), nullable=False)  # NUMERICAL_FAILURE, PHYSICAL_BOUNDARY, NUMERICAL_CONVERGENCE, etc.
+    severity = Column(String(20), nullable=False)  # CRITICAL, WARNING, INFO
+    title = Column(String(200), nullable=False)
+    explanation = Column(Text, nullable=False)
+    detection_rule = Column(String(100), nullable=False)
+    observed_value = Column(String(100), nullable=True)
+    reference_value = Column(String(100), nullable=True)
+    residual = Column(Float, nullable=True)
+    threshold = Column(String(100), nullable=True)
+    status = Column(String(30), nullable=False, default="NEW")  # NEW, INVESTIGATING, REPRODUCED, RESOLVED, DISMISSED
+    recommended_action = Column(Text, nullable=True)
+    resolution_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

@@ -20,6 +20,17 @@ import {
   MissionReportSummary,
   ReplayFramesResponse,
 } from '../types';
+import {
+  PhysicsModelMeta,
+  PhysicsExperiment,
+  TrajectoryPayload,
+  PhysicsAnomaly,
+  CreateExperimentPayload,
+  CompareModelsPayload,
+  ParameterSweepPayload,
+  ParameterFitPayload,
+  ValidationSummary,
+} from '../types/physics_lab';
 
 const API_BASE = '/api';
 
@@ -148,4 +159,47 @@ export const api = {
 
   // Reports
   getMissionSummary: () => fetchJson<MissionReportSummary>('/v1/reports/mission-summary'),
+
+  // AURORA Physics Lab
+  getPhysicsModels: () => fetchJson<PhysicsModelMeta[]>('/v1/physics-lab/models'),
+  getPhysicsModel: (modelId: string) => fetchJson<PhysicsModelMeta>(`/v1/physics-lab/models/${modelId}`),
+  getPhysicsValidationSummary: () => fetchJson<ValidationSummary>('/v1/physics-lab/validation/summary'),
+  createPhysicsExperiment: (payload: CreateExperimentPayload) =>
+    fetchJson<PhysicsExperiment>('/v1/physics-lab/experiments', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  getPhysicsExperiments: (limit: number = 50, offset: number = 0) =>
+    fetchJson<PhysicsExperiment[]>(`/v1/physics-lab/experiments?limit=${limit}&offset=${offset}`),
+  getPhysicsExperiment: (id: string) => fetchJson<PhysicsExperiment>(`/v1/physics-lab/experiments/${id}`),
+  getPhysicsTrajectory: (id: string) => fetchJson<TrajectoryPayload>(`/v1/physics-lab/experiments/${id}/trajectory`),
+  getPhysicsAnomalies: (experimentId?: string, severity?: string) => {
+    const params = new URLSearchParams();
+    if (experimentId) params.append('experiment_id', experimentId);
+    if (severity) params.append('severity', severity);
+    const qs = params.toString();
+    return fetchJson<PhysicsAnomaly[]>(`/v1/physics-lab/anomalies${qs ? `?${qs}` : ''}`);
+  },
+  updatePhysicsAnomalyStatus: (id: string, status: string, notes?: string) =>
+    fetchJson<PhysicsAnomaly>(`/v1/physics-lab/anomalies/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, resolution_notes: notes }),
+    }),
+  comparePhysicsModels: (payload: CompareModelsPayload) =>
+    fetchJson<any>('/v1/physics-lab/experiments/compare', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  runParameterSweep: (payload: ParameterSweepPayload) =>
+    fetchJson<any>('/v1/physics-lab/experiments/sweep', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  runParameterFit: (payload: ParameterFitPayload) =>
+    fetchJson<any>('/v1/physics-lab/experiments/fit', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  getPhysicsCsvUrl: (experimentId: string) =>
+    `/api/v1/physics-lab/export/csv?experiment_id=${experimentId}`,
 };
