@@ -1,0 +1,70 @@
+declare module 'lucide-react' {
+  import * as React from 'react';
+  export interface LucideProps extends React.SVGProps<SVGSVGElement> {
+    size?: string | number;
+    color?: string;
+    strokeWidth?: string | number;
+    className?: string;
+  }
+  export type LucideIcon = React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<LucideProps> & React.RefAttributes<SVGSVGElement>
+  >;
+  export const Activity: LucideIcon;
+  export const Radio: LucideIcon;
+  export const AlertTriangle: LucideIcon;
+  export const ShieldAlert: LucideIcon;
+  export const Cpu: LucideIcon;
+  export const RefreshCw: LucideIcon;
+  export const LayoutDashboard: LucideIcon;
+  export const Terminal: LucideIcon;
+  export const ScrollText: LucideIcon;
+  export const Calendar: LucideIcon;
+  export const FlaskConical: LucideIcon;
+  export const HeartPulse: LucideIcon;
+  export const Workflow: LucideIcon;
+  export const CheckCircle2: LucideIcon;
+  export const FileSpreadsheet: LucideIcon;
+  export const Info: LucideIcon;
+  export const Play: LucideIcon;
+  export const Pause: LucideIcon;
+  export const Square: LucideIcon;
+  export const StepForward: LucideIcon;
+  export const CheckCircle: LucideIcon;
+  export const Thermometer: LucideIcon;
+  export const BatteryCharging: LucideIcon;
+  export const Zap: LucideIcon;
+  export const Compass: LucideIcon;
+  export const ArrowRight: LucideIcon;
+  export const Download: LucideIcon;
+  export const Filter: LucideIcon;
+  export const Sliders: LucideIcon;
+  export const Database: LucideIcon;
+  export const Send: LucideIcon;
+  export const XCircle: LucideIcon;
+  export const Clock: LucideIcon;
+  export const Eye: LucideIcon;
+  export const Check: LucideIcon;
+  export const X: LucideIcon;
+  export const Search: LucideIcon;
+  export const PlayCircle: LucideIcon;
+  export const Plus: LucideIcon;
+  export const Trash2: LucideIcon;
+  export const GitCommit: LucideIcon;
+  export const Hash: LucideIcon;
+  export const TrendingUp: LucideIcon;
+  export const TrendingDown: LucideIcon;
+  export const Minus: LucideIcon;
+  export const FileCode: LucideIcon;
+  export const Layers: LucideIcon;
+  export const Bug: LucideIcon;
+  export const FileCheck: LucideIcon;
+  export const AlertCircle: LucideIcon;
+  export const FileText: LucideIcon;
+  export const ShieldCheck: LucideIcon;
+  export const BookOpen: LucideIcon;
+  export const SkipBack: LucideIcon;
+  export const SkipForward: LucideIcon;
+  export const RotateCcw: LucideIcon;
+  export const Rewind: LucideIcon;
+  export const FastForward: LucideIcon;
+}
